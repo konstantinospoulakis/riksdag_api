@@ -8,7 +8,7 @@ library(BBmisc)
 
 #Step 1
 #we are retrieving the file names of the debades in order to download them later
-url<-getURL("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2008-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&s=1")
+url<-getURL("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2010-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&s=1")
 #The url being examined has parameterixed to receive protocols between (2010-01-01,2015-07-01)
 sidor<-xmlTreeParse(url,useInternalNodes=T)
 sidor<-xmlRoot(sidor)
@@ -16,7 +16,7 @@ ifelse(xmlSize(xmlAttrs(sidor))==14,sidor<-c(xmlAttrs(sidor)[[7]]),sidor<-c(xmlA
 lista<-NULL
 ids<-NULL
 for (i in 1:sidor){
-  doc<-getURL(paste("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2008-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&",paste("p=",i,sep=""),sep=""))                
+  doc<-getURL(paste("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2010-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&",paste("p=",i,sep=""),sep=""))                
   data_doc<-xmlTreeParse(doc,useInternalNodes=T)
   data_root<-xmlRoot(data_doc)
   ids<-c(getNodeSet(data_root,"//dokument/dok_id")) #with this process we extract the document ids
