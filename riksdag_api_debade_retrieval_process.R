@@ -34,7 +34,7 @@ text<-NULL
 #Step 2
 # now that we have the names we are ready to download the text within the xlm files of every answer of every debade
 
-for (i in 1:length(lista)) {                              
+for (i in 1:length(lista)) {                               
   k=1  #counter for the while loop, it will count how many responses are in every debade in order to let the while loop extract the speeches from there
   exist<- getURL(paste("http://data.riksdagen.se/anforande/",paste(lista[i]),ifelse(k<10,paste("-",0,k,sep=""),paste("-",k,sep="")),sep="")) #
   #exist helps to check if an xml exists because many url's dont exist
