@@ -5,7 +5,7 @@ library(xml2)
 library(tau) 
 library(BBmisc)
 
-
+ 
 #Step 1
 #we are retrieving the file names of the debades in order to download them later
 url<-getURL("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2010-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&s=1")
