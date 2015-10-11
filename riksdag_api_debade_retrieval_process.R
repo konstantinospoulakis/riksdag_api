@@ -45,7 +45,7 @@ for (i in 1:length(lista)) {
       dokumentolikaanforanden<-xmlTreeParse(dokumentolikaanforanden,useInternalNodes=T);  
       dokumentolikaanforanden<-xmlRoot(dokumentolikaanforanden);
       dokumentolikaanforanden<-getNodeSet(dokumentolikaanforanden,"//anforande/anforandetext");
-      text<-c(text,fixEncoding(xmlValue(dokumentolikaanforanden[[1]]), latin1 = FALSE)[[1]]) ;   #here we are saving the encoded text, symbols like c(?,?,?) are getting recognized through this command      
+      text<-c(text,fixEncoding(xmlValue(dokumentolikaanforanden[[1]]), latin1 = FALSE)[[1]]) ;   #here we are saving the encoded text, letters of swedish alphabet are getting recognized through this command      
     }
     k<-k+1 #drives the while to the next document
     exist<- getURL(paste("http://data.riksdagen.se/anforande/",paste(lista[i]),ifelse(k<10,paste("-",0,k,sep=""),paste("-",k,sep="")),sep=""))  
