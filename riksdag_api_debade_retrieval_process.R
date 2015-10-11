@@ -5,18 +5,22 @@ library(xml2)
 library(tau) 
 library(BBmisc)
 
- 
+
+data<-function(from_date,to_date){
+
 #Step 1
 #we are retrieving the file names of the debades in order to download them later
-url<-getURL("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2010-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&s=1")
-#The url being examined has parameterixed to receive protocols between (2010-01-01,2015-07-01)
+url<-getURL(paste("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=",paste(from_date),"&tom=",paste(to_date),
+            paste("&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&s=1"),sep=""))
+#The url has been parameterixed to receive protocols between (from_date,to_date)
 sidor<-xmlTreeParse(url,useInternalNodes=T)
 sidor<-xmlRoot(sidor)
 ifelse(xmlSize(xmlAttrs(sidor))==14,sidor<-c(xmlAttrs(sidor)[[7]]),sidor<-c(xmlAttrs(sidor)[[6]]))#the structure of the xml for more than 1457 results is different so we have to parameterize this in order to return the right number of pages 
 lista<-NULL
 ids<-NULL
 for (i in 1:sidor){
-  doc<-getURL(paste("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=2010-01-01&tom=2015-10-01&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&",paste("p=",i,sep=""),sep=""))                
+  doc<-getURL(paste("http://data.riksdagen.se/dokumentlista/?sok=&doktyp=prot&rm=&from=",paste(from_date),"&tom=",paste(to_date),
+            paste("&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=&utformat=xml&a=s&"),paste("p=",i,sep=""),sep=""))                
   data_doc<-xmlTreeParse(doc,useInternalNodes=T)
   data_root<-xmlRoot(data_doc)
   ids<-c(getNodeSet(data_root,"//dokument/dok_id")) #with this process we extract the document ids
@@ -28,9 +32,7 @@ for (i in 1:sidor){
 }
 
 lista #we can check which file names have been found through the process 
-
 text<-NULL
-
 #Step 2
 # now that we have the names we are ready to download the text within the xlm files of every answer of every debade
 
@@ -50,5 +52,15 @@ for (i in 1:length(lista)) {
     k<-k+1 #drives the while to the next document
     exist<- getURL(paste("http://data.riksdagen.se/anforande/",paste(lista[i]),ifelse(k<10,paste("-",0,k,sep=""),paste("-",k,sep="")),sep=""))  
   }
+if(i%%10==0) print(paste(i,"debades so far"))
 }
+results<-c(text)
+return(results)
+}
+
+
+from_date="2010-01-10"  #insert the starting date of the debades you want
+to_date="2010-10-10"    #insert the ending date of the debades you want
+
+new<-data(from_date,to_date)
 
