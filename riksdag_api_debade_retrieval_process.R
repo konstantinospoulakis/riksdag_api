@@ -35,7 +35,7 @@ lista #we can check which file names have been found through the process
 text<-NULL
 #Step 2
 # now that we have the names we are ready to download the text within the xlm files of every answer of every debade
-
+report<-data.frame(lista,rep(0,length(lista)))
 for (i in 1:length(lista)) {                               
   k=1  #counter for the while loop, it will count how many responses are in every debade in order to let the while loop extract the speeches from there
   exist<- getURL(paste("http://data.riksdagen.se/anforande/",paste(lista[i]),ifelse(k<10,paste("-",0,k,sep=""),paste("-",k,sep="")),sep="")) #
@@ -52,15 +52,28 @@ for (i in 1:length(lista)) {
     k<-k+1 #drives the while to the next document
     exist<- getURL(paste("http://data.riksdagen.se/anforande/",paste(lista[i]),ifelse(k<10,paste("-",0,k,sep=""),paste("-",k,sep="")),sep=""))  
   }
+  report[i,2]<-ifelse(k==1,0,k)
 if(i%%10==0) print(paste(i,"debades so far"))
 }
-results<-c(text)
+results<-list(text,report)
 return(results)
 }
 
 
-from_date="2010-01-10"  #insert the starting date of the debades you want
-to_date="2010-10-10"    #insert the ending date of the debades you want
+from_date="2010-01-01"  #insert the starting date of the debades you want
+to_date="2010-12-31"    #insert the ending date of the debades you want
 
+ptm<-proc.time
 new<-data(from_date,to_date)
+proc.time() - ptm
+
+report<-as.data.frame(new[2])
+
+        
+write.table(report,"number of responces in debades.txt",sep=" , ",quote=F)
+
+
+
+
+
 
